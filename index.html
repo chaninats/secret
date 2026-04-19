@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>secret</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-bg: #fdf0f4;
+            --pink-soft: #ffb8c6;
+            --pink-accent: #ff85a1;
+            --white: rgba(255, 255, 255, 0.9); /* ปรับให้โปร่งแสงนิดๆ */
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Mali', cursive;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--pink-bg);
+            background-image: radial-gradient(#ffcad4 0.8px, transparent 0.8px);
+            background-size: 24px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 10px;
+        }
+
+        /* --- ตกแต่งพื้นหลังเพิ่มเติม --- */
+        .bg-decor {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            background: linear-gradient(135deg, #ffc2d1 0%, #ffe4e9 100%);
+            filter: blur(50px);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: move 15s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100px, 50px); }
+        }
+
+        /* สติกเกอร์ลอยๆ */
+        .floating-emoji {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.3;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        #bg-hearts {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* --- ตัว Card --- */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 95%;
+            max-width: 850px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background: var(--white);
+            backdrop-filter: blur(10px); /* เอฟเฟกต์กระจกฝ้า */
+            padding: 60px 40px;
+            border-radius: 50px;
+            box-shadow: 0 25px 50px rgba(255, 133, 161, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            text-align: center;
+            width: 100%;
+            display: none;
+            animation: popIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card.active { display: block; }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .big-cat {
+            font-size: 10rem;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+        }
+
+        h1 { color: #4a4a4a; font-size: 2.2rem; margin: 15px 0; }
+        .subtitle { color: #666; font-size: 1.2rem; margin-bottom: 25px; }
+
+        .btn-main {
+            background: var(--pink-soft);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            border-radius: 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(255, 184, 198, 0.6);
+        }
+
+        .btn-main:hover { background: var(--pink-accent); transform: translateY(-5px) scale(1.05); }
+
+        .options-grid {
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            max-width: 400px;
+        }
+
+        .btn-opt {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid var(--pink-bg);
+            padding: 15px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-opt:hover { background: var(--pink-bg); color: var(--pink-accent); transform: translateX(5px); }
+
+        /* Photo Grid */
+        .scrapbook-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 12px 12px 25px 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: 0.4s;
+            cursor: pointer;
+            border: 1px solid #fff;
+        }
+
+        .polaroid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+        .polaroid p { font-size: 0.85rem; margin: 12px 0 0; font-weight: bold; color: #888; }
+
+        .polaroid:nth-child(odd) { transform: rotate(-3deg); }
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
+
+        .polaroid:hover {
+            transform: scale(1.15) rotate(0deg);
+            z-index: 50;
+            box-shadow: 0 20px 40px rgba(255, 133, 161, 0.4);
+        }
+
+        /* --- Media Queries --- */
+        @media (max-width: 600px) {
+            .card { padding: 40px 20px; border-radius: 35px; }
+            .big-cat { font-size: 7rem; }
+            .scrapbook-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        }
+
+        .music-box { margin-top: 30px; padding: 15px; background: rgba(252, 228, 236, 0.5); border-radius: 25px; border: 1px dashed var(--pink-accent); }
+        audio { width: 100%; height: 35px; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-decor">
+        <div class="blob" style="width: 400px; height: 400px; top: -100px; left: -100px;"></div>
+        <div class="blob" style="width: 300px; height: 300px; bottom: -50px; right: -50px; animation-delay: -2s;"></div>
+        
+        <div class="floating-emoji" style="top: 10%; left: 10%;">✨</div>
+        <div class="floating-emoji" style="top: 20%; right: 15%; animation-delay: 1s;">☁️</div>
+        <div class="floating-emoji" style="bottom: 15%; left: 20%; animation-delay: 2s;">🎀</div>
+        <div class="floating-emoji" style="bottom: 25%; right: 10%; animation-delay: 3s;">🍭</div>
+    </div>
+
+    <div id="bg-hearts"></div>
+
+    <div class="main-wrapper">
+        <section id="p1" class="card active">
+            <span class="big-cat">🐱</span>
+            <h1>บันทึกบี๋อ้วน</h1>
+            <p class="subtitle">question for Anawat</p>
+            <button class="btn-main" onclick="nextPage('p1', 'p2')">Start!</button>
+        </section>
+
+        <section id="p2" class="card">
+            <h1>Question 1 🎀</h1>
+            <p class="subtitle">เราคบกันวันที่เท่าไหร่คับ?</p>
+            <div class="options-grid">
+                <button class="btn-opt" onclick="wrong()"> 20 ธันวาคม 2568</button>
+                <button class="btn-opt" onclick="nextPage('p2', 'p3')">20 เมษายน 2568</button>
+                <button class="btn-opt" onclick="wrong()">20 มีนาคม 2568</button>
+                <button class="btn-opt" onclick="wrong()">20 กุมภาพันธ์ 2568</button>
+            </div>
+        </section>
+
+        <section id="p3" class="card">
+            <h1>Question 2 🍭</h1>
+            <p class="subtitle">เราเจอกันครั้งแรกที่ไหนคับ?</p>
+            <div class="options-grid">
+                <button class="btn-opt" onclick="nextPage('p3', 'p4')">เซ็นทรัลเวสเกต</button>
+                <button class="btn-opt" onclick="wrong()">สยามพารากอน</button>
+                <button class="btn-opt" onclick="wrong()">ฟิวเจอร์พาร์ค</button>
+                <button class="btn-opt" onclick="wrong()">เซ็นทรัลแจ้งวัฒนะ</button>
+            </div>
+        </section>
+
+        <section id="p4" class="card">
+            <h1>Question 3 🐷</h1>
+            <p class="subtitle">เราไปดู Superman ด้วยกันเดือนไหนคับบ</p>
+            <div class="options-grid">
+                <button class="btn-opt" onclick="wrong()">มิถุนายน</button>
+                <button class="btn-opt" onclick="wrong()">สิงหาคม</button>
+                <button class="btn-opt" onclick="nextPage('p4', 'p5')">กรกฎาคม</button>
+                <button class="btn-opt" onclick="wrong()">พฤษภาคม</button>
+            </div>
+        </section>
+
+                <section id="p5" class="card">
+            <h1>Question 4 🎞️</h1>
+            <p class="subtitle">หนังสุดท้ายที่เราดูด้วยกันคืออะไรคับผม</p>
+            <div class="options-grid">
+                <button class="btn-opt" onclick="wrong()">Eden</button>
+                <button class="btn-opt" onclick="wrong()">Zootopia 2</button>
+                <button class="btn-opt" onclick="nextPage('p5', 'p6')">DivaLavie</button>
+                <button class="btn-opt" onclick="wrong()">Conjuring 4</button>
+            </div>
+        </section>
+
+        <section id="p6" class="card">
+            <h1>Last Question ❤️</h1>
+            <p class="subtitle">Do you love me?</p>
+            <div class="options-grid">
+                <button class="btn-opt" onclick="wrong()">มีกิ้ก</button>
+                <button class="btn-opt" onclick="wrong()">รักจ้า</button>
+                <button class="btn-opt" onclick="nextPage('p6', 'p7')">รักค้าบ รักที่สุดในโลก</button>
+                <button class="btn-opt" onclick="wrong()">นิดนึง</button>
+            </div>
+        </section>
+
+         <section id="p7" class="card">
+            <h1>เก่งมากค้าบอ้วน</h1>
+            <p class="subtitle">เย้ยยย เก่งที่สุดเลย จุ๊บ ๆๆ</p>
+            <button class="btn-main" onclick="nextPage('p7', 'final')">Next</button>
+        </section>
+
+        <section id="final" class="card">
+            <h1>Happy 1st Anniversary! ❤️</h1>
+            <p class="subtitle">"ขอบคุณที่อยู่ด้วยกันมาตลอดนะ ขอบคุณสำหรับทุกอย่างเลย ขอบคุณที่อยู่กับเค้าในตอนที่เค้าเองก็นิสัยไม่น่ารัก งอนแล้วไม่พูด เป็นอะไรไม่บอก หรือวันที่เค้าทำให้เธองอน แล้วเค้าเองก็อยากขอโทษเธอทุก ๆ เรื่องที่ผ่านมานะ ที่ทำให้เธอน้อยใจหรือเสียใจ แต่ก็ยังไม่ทิ้งเค้า เธอเป็นคนรักที่ดีมาก ๆ ดีที่สุดในโลกเลยนะ เค้ารักเธอมาก ๆๆ เลยนะกาฟิลด์ ดีใจมาก ๆ นะ ที่มีเธออยู่กับเค้า อยู่กับเค้าไปนาน ๆ นะบี๋อ้วนนน ขอบคุณนะที่เกิดมา แล้วก็ขอบคุณนะที่เลือกเค้าเป็นแฟน เค้าจะพยายามเป็นแฟนที่ดีสำหรับแกให้มาก ๆ เลยนะ รักนะ จุ๊บ ๆๆ "</p>
+            <div class="scrapbook-grid">
+                <div class="polaroid"><img src="1years/ticket.jpg"><p>First Date</p></div>
+                <div class="polaroid"><img src="1years/wesgate.jpg"><p>Our Date</p></div>
+                <div class="polaroid"><img src="1years/minecraft.jpg"><p>Game Night</p></div>
+                <div class="polaroid"><img src="1years/teenoi.jpg"><p>yummy yummy</p></div>
+                <div class="polaroid"><img src="1years/couple.jpg"><p>❤️🐷</p></div>
+                <div class="polaroid"><img src="1years/vdocall.png"><p>Rak na</p></div>
+                <div class="polaroid"><img src="1years/central.jpg"><p>Go home together</p></div>
+                <div class="polaroid"><img src="1years/frontcen.jpg"><p>❤️❤️</p></div>
+                <div class="polaroid"><img src="1years/roblox.jpg"><p>hahaha rak na</p></div>
+            </div>
+            <div class="music-box">
+                <p style="font-size: 0.85rem; font-weight: bold; color: var(--pink-accent);">🎵 fellow fellow - วันนี้ พรุ่งนี้ ตลอดไป</p>
+                <audio id="song" controls><source src="fellow_fellow.mp3" type="audio/mpeg"></audio>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        function nextPage(currentId, nextId) {
+            document.getElementById(currentId).style.display = 'none';
+            document.getElementById(nextId).classList.add('active');
+            if (nextId === 'final') {
+                startHearts();
+                document.getElementById('song').play().catch(() => {});
+            }
+        }
+        function wrong() { alert("ไออ้วนนนนนนนน แกมีกิ้กหรอ! 😤"); }
+        function startHearts() {
+            setInterval(() => {
+                const h = document.createElement('div');
+                h.innerHTML = '💖';
+                h.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:110vh; font-size:${Math.random()*20+15}px; transition:4s linear; z-index:1;`;
+                document.getElementById('bg-hearts').appendChild(h);
+                setTimeout(() => { h.style.transform = `translateY(-120vh) rotate(360deg)`; h.style.opacity = '0'; }, 100);
+                setTimeout(() => h.remove(), 4000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
